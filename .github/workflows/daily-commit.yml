@@ -1,0 +1,37 @@
+name: Daily Commit Job
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual triggering of the workflow
+  
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      # Make changes to files (example: updating a timestamp)
+      - name: Make changes
+        run: |
+          echo "Last updated on $(date)" > daily-update.txt
+
+      # Configure Git for committing
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Commit changes
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "Daily update: $(date)"
+
+      # Push changes back to the repository
+      - name: Push changes
+        run: |
+          git push
