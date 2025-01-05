@@ -31,7 +31,8 @@ jobs:
           git add .
           git commit -m "Daily update: $(date)"
 
-      # Push changes back to the repository
       - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git push
